@@ -136,3 +136,51 @@ public static void main(String[] args) throws IOException {
 <br><br>
 ### 아이템 60. 정확한 답이 필요하다면 float와 double은 피하라
 
+* float와 double 타입은 과학/공학 계산용으로 넓은 범위의 수를 빠르게 정밀한 **"근사치"**로 계산하도록 설계됨.
+* 특히 금융 관련 계산과는 맞지 않음.
+```java
+// 코드 60-1 오류 발생! 금융 계산에 부동소수 타입을 사용했다.
+// 결과값이 0.39999999999 형식으로 출력됨
+public static void main(String[] args) {
+  double funds = 1.00;
+  int itemsBought = 0;
+  for (double price = 0.10; funds >= price; price += 0.10) {
+    funds -= price;
+    itemsBought++;
+  }
+  System.out.println(itemsBought + "개 구입");
+  System.out.println("잔돈(달러):" + funds);
+}
+```
+* **금융 계산에는 `BigDecimal`, `int` 혹은 `long`을 사용해야 한다.**
+  * `BigDecimal`의 경우 기본 타입보다 쓰기가 훨씬 불편하고 느림.
+  * 기본형의 경우 다룰 수 있는 값의 크기가 제한되고 소수점을 관리해야 함.
+  * 9자리 10진수는 `int`, 18자리 10진수는 `long`, 그 이상은 `BigDecimal`을 사용
+```java
+// 코드 60-2 BigDecimal을 사용한 해법. 속도가 느리고 쓰기 불편
+public static void main(String[] args) {
+  final BigDecimal TEN_CENTS = new BigDecimal(".10");
+  
+  int itemsBought = 0;
+  BigDecimal funds = new BigDecimal("1.00");
+  for (BigDecimal price = TEN_CENTS; funds.compareTo(price) >= 0; price = price.add(TEN_CENTS)) {
+    funds = funds.substract(price);
+    itemsBought++;
+  }
+  System.out.println(itemsBought + "개 구입");
+  System.out.println("잔돈(달러):" + funds);
+}
+
+
+// 코드 60-3 정수 타입을 사용한 해법
+public static void main(String[] args) {
+  int funds = 100;
+  int itemsBought = 0;
+  for (double price = 10; funds >= price; price += 10) {
+    funds -= price;
+    itemsBought++;
+  }
+  System.out.println(itemsBought + "개 구입");
+  System.out.println("잔돈(센트):" + funds);
+}
+```
