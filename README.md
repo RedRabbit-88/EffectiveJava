@@ -22,7 +22,7 @@ for (int i = 0, n = expensiveComputatio(); i< n; i++) {
   // TO-DO
 }
 ```
-
+<br><br>
 ### 아이템 58. 전통적인 for문보다는 for-each문을 사용하라
 
 ```java
@@ -89,9 +89,14 @@ for (Suit suit : suits)
   
   * **병렬 반복 (parallel iteration)**
   <br>여러 컬렉션을 병렬로 순회해야 한다면 각각의 반복자와 인덱스 변수를 사용해 엄격하고 명시적으로 제어해야 함.
-  
-  
+<br><br>
 ### 아이템 59. 라이브러리를 익히고 사용하라
+
+>**표준라이브러리를 사용할 때의 장점**
+><br>핵심적인 일과 크게 관련 없는 문제를 해결하느라 시간을 허비하지 않아도 됨.
+><br>따로 노력하지 않아도 성능이 지속해서 개선됨.
+><br>기능이 점점 많아짐
+><br>작성한 코드가 많은 사람에게 낯익은 코드가 됨.
 
 ```java
 // 코드 59-1 흔하지만 문제가 심각한 코드
@@ -103,6 +108,31 @@ static int random(int n) {
 ```
 * 3가지 문제점
   * n이 그리 크지 않은 2의 제곱수라면 얼마 지나지 않아 같은 수열이 반복됨.
-  * n이 2의 제곱수가 아니라면 몇몇 숫자가 평균적으로 더 자주 반환됨.
-  * n값이 크면 이 현상은 더 두드러짐.
+  * n이 2의 제곱수가 아니라면 몇몇 숫자가 평균적으로 더 자주 반환됨. (n값이 크면 이 현상은 더 두드러짐.)
+  * **지정한 범위 "바깥"의 수가 종종 튀어나올 수 있음**
+  <br>`rnd.nextInt()`가 반환한 값을 `Math.abs`를 이용해 음수가 아닌 정수로 매핑하기 때문.
+
+* 해결방안
+  * 의사난수 생성기, 정수론, 의 보수 계산 등을 고려해서 해결
+  * **`Random.nextInt(int)`를 사용!**
   
+* 자바7부터는 `Random`은 가급적 사용하지 않는게 좋음
+* `ThreadLocalRandom`으로 대체하면 대부분 잘 작동함.
+* Fork-Join 풀이나 병렬 스트림에서는 `SplittableRandom`을 사용할 것
+
+```java
+// 코드 59-2 transferTo 메서드를 이용해 URL의 내용 가져오기 (자바9부터 가능)
+public static void main(String[] args) throws IOException {
+  try (InputStream in = new URL(args[0].openStream()) {
+    in.transferTo(System.out);
+  }
+}
+```
+
+* **자바 프로그래머가 꼭 알아둬야 할 라이브러리**
+  * `java.lang`, `java.util`, `java.io`와 그 하위 패키지들
+  * 컬렉션 프레임워크, 스트림 라이브러리 (아이템 45 ~ 48)
+  * `java.util.concurrent`의 동시성 기능
+<br><br>
+### 아이템 60. 정확한 답이 필요하다면 float와 double은 피하라
+
