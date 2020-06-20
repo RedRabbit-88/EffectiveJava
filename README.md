@@ -184,3 +184,54 @@ public static void main(String[] args) {
   System.out.println("잔돈(센트):" + funds);
 }
 ```
+<br><br>
+### 아이템 61. 박싱(Boxing)된 기본 타입보다는 기본 타입을 사용하라
+
+* 기본 타입과 박싱된 기본 타입의 차이점
+
+|구분|기본 타입|박싱된 기본타입|
+|--|--|--|
+|구성|값|값과 식별성(identity) 속성|
+|값의 속성|언제나 유효|null을 포함할 수 있음|
+|시간/메모리<br>효율성|더 효율적|-|
+
+```java
+// 코드 61-1 잘못 구현된 비교자
+Comparator<Integer> naturalOrder = (i, j) -> (i < j) ? -1 : (i == j ? 0 : 1);
+
+// naturalOrder.compare(new Integer(42), new Integer(42)) 의 결과는 1을 출력 (실제로는 0을 출력해야 함)
+// 이유 : ==로 비교 시 두 "객체 참조"의 식별성을 검사함.
+// 2개의 Integer가 다른 인스턴스이기 때문에 결과값이 false임.
+
+// 코드 61-2 문제를 수정한 비교자
+Comparator<Integer> naturalOrder = (iBoxed, jBoxed) -> {
+  int i = iBoxed, j = jBoxed; // 오토박싱
+  return (i < j) ? -1 : (i == j ? 0 : 1);
+}
+```
+* **박싱된 기본 타입에 == 연산자를 사용하면 오류가 발생**
+
+```java
+// 코드 61-3 기이하게 동작하는 프로그램
+public class Unbelievable {
+  static Integer i;
+  
+  public static void main(String[] args) {
+    if (i == 42)
+      System.out.println("Unbelievable!");
+  }
+}
+
+// NullPointerException이 발생함
+// 이유 : Integer i를 생성하지 않음. 기본값은 null
+```
+* 기본 타입과 박싱된 기본 타입을 혼용한 연산에서는 박싱된 기본 타입의 박싱이 자동으로 풀린다.
+  * `(i == 42)`에서 `Integer i`가 `int i`로 자동으로 언박싱되며 null을 언박싱하게 됨.
+
+* 박싱된 기본 타입을 쓰는 경우
+  * 컬렉션의 원소, 키, 값으로 쓰임.
+  <br>컬렉션은 기본 타입을 지원하지 않으므로 박싱된 기본 타입을 사용하게 됨
+  * 리플렉션(아이템 65)을 통해 메서드를 호출할 때도 박싱된 기본 타입을 사용해야 함
+<br><br>
+### 아이템 62. 다른 타입이 적절하다면 문자열 사용을 피하라
+
