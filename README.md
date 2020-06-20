@@ -22,7 +22,7 @@ for (int i = 0, n = expensiveComputatio(); i< n; i++) {
   // TO-DO
 }
 ```
-<br><br>
+<br>
 ### 아이템 58. 전통적인 for문보다는 for-each문을 사용하라
 
 ```java
