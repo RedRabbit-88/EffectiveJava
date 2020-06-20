@@ -2,7 +2,7 @@
 
 ## 9장 일반적인 프로그래밍 원칙
 
-### 아이템 57. 지역변수의 번위를 최소화하라
+### 아이템 57. 지역변수의 범위를 최소화하라
 
 > **지역변수의 범위를 줄이는 기법**<br>
 > 가장 처음 쓰일 때 선언하기 (가장 좋음)<br>
@@ -235,3 +235,68 @@ public class Unbelievable {
 <br><br>
 ### 아이템 62. 다른 타입이 적절하다면 문자열 사용을 피하라
 
+* 문자열은 다른 값 타입을 대신하기에 적합하지 않다.
+* 문자열은 열거 타입을 대신하기에 적합하지 않다.
+* 문자열은 혼합 타입을 대신하기에 적합하지 않다.
+```java
+// 코드 62-1 혼합 타입을 문자열로 처리한 부적절한 예
+// 혹시라도 문자열에 구분자 "#"가 사용되었다면 부적절한 결과 초래
+String compoundkey = className + "#" + i.next();
+
+// 이런 경우는 보통 private 정적 멤버 클래스로 선언(아이템 24)
+```
+* 문자열은 권한(capacity)을 표현하기에 적합하지 않다.
+```java
+// 코드 62-2 잘못된 예 - 문자열을 사용해 권한을 구분
+// 문제점 스레드 구분용 문자열 키가 전역 이름공간에서 공유되어 유일성 보장 못함.
+public class ThreadLocal {
+  private ThreadLocal() { } // 객체 생성 불가
+  
+  // 현 스레드의 값을 키로 구분해 저장
+  public static void set(String key, Object value);
+  
+  // (키가 가리키는) 현 스레드의 값을 반환
+  public static Object get(String key);
+}
+
+
+// 코드 62-3 Key 클래스로 권한을 구분
+public class ThreadLocal {
+  private ThreadLocal() { } // 객체 생성 불가
+  
+  public static class Key { // 권한
+    Key() { }
+  }
+  
+  // 위조 불가능한 고유 키를 생성한다.
+  public static Key getKey() {
+    return new Key();
+  }
+  
+  public static void set(Key key, Object value);
+  public static Object get(Key key);
+}
+
+
+// 코드 62-4 리팩터링하여 Key를 ThreadLocal로 변경
+public final class ThreadLocal {
+  public ThreadLocal();
+  public void set(Object value);
+  public Object get();
+}
+
+
+// 코드 62-5 매개변수화하여 타입안전성 확보
+public final class ThreadLocal<T> {
+  public ThreadLocal();
+  public void set(T value);
+  public T get();
+}
+```
+<br><br>
+### 아이템 63. 문자열 연결은 느리니 주의하라
+
+* 문자열 연결 연산자로 문자열 n개를 잇는 시간은 n2에 비례한다
+<br>문자열은 불변이라서 두 문자열을 연결할 경우 양쪽의 내용을 모두 복사해야 함.
+<br>-> 성능저하 초래
+* **성능을 포기하고 싶지 않다면 `String`대신 `StringBuilder`를 사용하자**
