@@ -293,10 +293,80 @@ public final class ThreadLocal<T> {
   public T get();
 }
 ```
-<br><br>
+
+
+
 ### 아이템 63. 문자열 연결은 느리니 주의하라
 
 * 문자열 연결 연산자로 문자열 n개를 잇는 시간은 n2에 비례한다
 <br>문자열은 불변이라서 두 문자열을 연결할 경우 양쪽의 내용을 모두 복사해야 함.
 <br>-> 성능저하 초래
 * **성능을 포기하고 싶지 않다면 `String`대신 `StringBuilder`를 사용하자**
+
+
+
+### 아이템 64. 객체는 인터페이스를 사용해 참조하라
+
+* 적당한 인터페이스만 있다면 매개변수뿐 아니라 반환값, 변수, 필드를 전부 인퍼체이스 타입으로 선언하라.
+* 객체의 실제 클래스를 사용해야 할 상황은 "오직" 생성자로 생성할 때 뿐
+* 인터페이스를 타입으로 사용하는 습관을 길러두면 프로그램이 훨씬 유연해짐
+* 적합한 인터페이스가 없다면 당연히 클래스로 참조
+  * String, BigInteger 같은 값 클래스
+  * 클래스 기반으로 작성된 프레임워크가 제공하는 객체들
+  <br>ex) OutputStream 등 java.io 패키지의 여러 클래스
+  * 인터페이스에는 없는 특별한 메서드를 제공하는 클래스들
+  <br>ex) PriorityQueue는 Queue 인터페이스에는 없는 comparator 메서드를 제공
+* 적합한 인터페이스가 없다면 클래스의 계층구조 중 필요한 기능을 만족하는 가장 덜 구체적인 클래스를 타입으로 사용
+
+
+### 아이템 65. 리플렉션보다는 인터페이스를 사용하라
+
+* 리플렉션 기능(java.lang.reflect)을 이용하면 프로그램에서 임의의 클래스에 접근 가능
+* **리플렉션의 단점**
+  * 컴파일타임 타입 검사가 주는 이점을 하나도 누릴 수 없다.
+  * 코드가 지저분하고 장황해진다.
+  * 성능이 떨어진다.
+* 리플렉션은 아주 제한된 형태로만 사용해야 그 단점을 피하고 이점만 취할 수 있다.
+```java
+public static void main(String[] args) {
+  // 클래스 이름을 Class 객체로 변환
+  Class<? extends Set<String>> cl = null;
+  try {
+    cl = (Class<? extends Set<String>>)
+          Class.forName(args[0]);
+  } catch (ClassNotFoundException e) {
+    fatalError("클래스를 찾을 수 없습니다.");
+  }
+  
+  // 생성자를 얻는다.
+  Constructor<? extends Set<String>> cons = null;
+  try {
+    cons = cl.getDeclaredConstractor();
+  } catch (NoSuchMethodException e) {
+    fatalError("매개변수 없는 생성자를 찾을 수 없습니다.");
+  }
+  
+  // 집합의 인스턴스를 만든다.
+  Set<String> s = null;
+  try {
+    s = cons.newInstance();
+  } catch(IllegalAccessException e) {
+    fatalError("생성자에 접근할 수 없습니다.");
+  } catch(InstantiationException e) {
+    fatalError("클래스를 인스턴스화할 수 없습니다.");
+  } catch(InvocationTargetException e) {
+    fatalError("생성자가 예외를 던졌습니다: " + e.getCause());
+  } catch(ClassCastException e) {
+    fatalError("Set을 구현하지 않은 클래스입니다.");
+  }
+  
+  // 생성한 집합을 사용
+  s.addAll(Arrays.asList(args).subList(1, args.length));
+  System.out.println(s);
+}
+
+private static void fatalError(String msg) {
+  System.err.println(msg);
+  System.exit(1);
+}
+```
