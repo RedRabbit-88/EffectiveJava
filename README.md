@@ -145,6 +145,185 @@ public class NutritionFacts {
 NutritionFacts cocaCola = new NutritionFacts.Builder(240, 8).calories(100).build();
 ```
 
+
+### 아이템 3. private 생성자나 열거 타입으로 싱글턴임을 보증하라
+
+* 싱글턴(singleton) : 인스턴스를 오직 하나만 생성할 수 있는 클래스
+* 클래스를 싱글턴으로 만들면 이를 사용하는 클라이언트를 테스트하기가 어려워질 수 있음.
+* **public 필드 방식**의 장점
+  * 해당 클래스가 싱글턴임이 API에 명백히 드러남
+  * 간결하다
+```java
+// 코드 3-1 public static final 필드 방식의 싱글턴
+public class Elvis {
+  public static final Elvis INSTANCE = new Elvis();
+  private Elvis() { }
+  
+  public void leaveTheBuilding() { }
+}
+```
+
+* **정적 팩터리 방식**의 장점
+  * API를 바꾸지 않고도 싱글턴이 아니게 변경할 수 있음. (getInstance()를 변경)
+  * 정적 팩터리를 제네릭 싱글턴 팩터리로 만들 수 있음.
+  * 정적 팩터리의 메서드 참조를 Supplier로 사용할 수 있음.
+  <br>ex) Elvis::getInstance -> Supplier<Elvis>
+```java
+// 코드 3-2 정적 팩터리 방식의 싱글턴
+public class Elvis {
+  private static final Elvis INSTANCE = new Elvis();
+  private Elvis() { }
+  public static Elvis getInstance() { return INSTANCE; }
+  
+  public void leaveTheBuilding() { }
+}
+```
+
+* 원소가 하나인 열거 타입을 선언
+  * **대부분의 상황에서 가장 좋음**
+```java
+public enum Elvis {
+  INSTANCE;
+  
+  public void leaveTheBuilding() { }
+}
+```
+
+
+### 아이템 4. 인스턴스화를 막으려거든 private 생성자를 사용하라
+
+```java
+public class UtilityClass {
+  // 기본 생성자가 만들어지는 것을 막는다(인스턴스화 방지용)
+  private UtilityClass() {
+    throw new AssertionError();
+  }
+}
+```
+
+
+### 아이템 5. 자원을 직접 명시하지 말고 의존 객체 주입을 사용하라
+
+* 사용하는 자원에 따라 동작이 달라지는 클래스에는 정적 유틸리티 클래스나 싱글턴 방식이 적합하지 않다.
+```java
+// 코드 5-1 정적 유틸리티를 잘못 사용한 예 - 유연하지 않고 테스트하기 어려움
+public class SpellChecker {
+  // 사전을 언제나 하나만 사용한다고?? 유연하지 않음
+  private static final Lexicon dictionary = ...;
+  
+  // 객체 생성 방지
+  private SpellChecker() { }
+  ...
+}
+
+
+// 코드 5-2 싱글턴을 잘못 사용한 예 - 유연하지 않고 테스트하기 어려움
+public class SpellChecker {
+  // 사전을 언제나 하나만 사용한다고?? 유연하지 않음
+  private static final Lexicon dictionary = ...;
+  
+  // 객체 생성 방지
+  private SpellChecker() { }
+  public static SpellChecker INSTANCE = new SpellChecker(...);
+  ...
+}
+```
+* 인스턴스를 생성할 때 생성자에 필요한 자원을 넘겨주는 방식이 좋다.
+```java
+// 코드 5-3 의존 객체 주입 방식
+public class SpellChecker {
+  private static final Lexicon dictionary;
+  
+  public SpellChecker(Lexicon dictionary) {
+    this.dictionary = Objects.requireNonNull(dictionary);
+  }
+  ...
+}
+```
+
+
+### 아이템 6. 불필요한 객체 생성을 피하라
+
+* 생성자 대신 정적 팩터리 메서드를 사용하면 불필요한 객체 생성을 피할 수 있음.
+<br>ex) `Boolean(String)` 대신 `Boolean.valueOf(String)` 사용
+
+* 생성 비용이 비싼 객체의 경우 다른 방법을 모색해라.
+```java
+// 코드 6-1 생성 비용이 비싼 객체
+static boolean isRomanNumeral(String s) {
+  return s.matches("^(?=.)M*(C[MD]...");
+}
+
+// 코드 6-2 값비싼 객체를 재사용해 성능을 개선
+public class RomanNumerals {
+  private static final Pattern ROMAN = Pattern.complie("^(?=.)M*(C[MD]...");
+  
+  static boolean isRomanNumeral(String s) {
+    return ROMAN.matcher(s).matches();
+  }
+}
+```
+
+* 불필요한 오토박싱은 피하라
+```java
+// 코드 6-3 잘못된 오토박싱
+private static long sum() {
+  // long이 아닌 박싱된 기본 타입인 Long을 사용해서 오토박싱에 많은 자원 소모
+  Long sum = 0L;
+  for (long i = 0; i<= INTEGER.MAX_VLAUE; i++)
+    sum += i;
+  
+  return sum;
+}
+```
+
+
+### 아이템 7. 다 쓴 객체 참조를 해제하라
+
+T.B.D
+
+
+### 아이템 8. finalizer와 cleaner 사용을 피하라
+
+T.B.D
+
+
+### 아이템 9. try-finally보다는 try-with-resources를 사용하라 (자바 7 이후)
+
+* InputStream, OutputStream, java.sql.Connection 등의 경우 자원 사용 후 close메서드를 호출해야 함.
+```java
+// 코드 9-1 try-finally - 좋은 방식이 아니다
+static String firstLineOfFile(String path) throws IOException {
+  BufferedReader br = new BufferedReader(new FileReader(path));
+  try {
+    return br.readLine();
+  } finally {
+    br.close();
+  }
+}
+
+// 코드 9-3 try-with-resources - 자원을 회수하는 최선책!
+static String firstLineOfFile(String path) throws IOException {
+  // try문이 끝나면 자동으로 close 호출
+  try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+    return br.readLine();
+  }
+}
+
+// 코드 9-4 복수의 자원을 처리하는 try-with-resources - 짧고 매혹적
+static void copy(String src, String dst) throws IOException {
+  try (InputStream in = new FileInputStream(src);
+       OutputStream out = new FileOutputStream(dst)) {
+    byte[] buf = new byte[BUFFER_SIZE];
+    int n;
+    while ((n = in.read(buf)) >= 0) {
+      out.write(buf, 0, n);
+    }
+  }
+}
+```
+
+
 ### 아이템 57. 지역변수의 범위를 최소화하라
 
 >**지역변수의 범위를 줄이는 기법**<br>
