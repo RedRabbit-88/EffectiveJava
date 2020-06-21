@@ -6,7 +6,7 @@
 
 * 클래스는 생성자와 별도로 정적 팩터리 메서드(static factory method)를 제공할 수 있다.
 <br>(해당 클래스의 인스턴스를 반환함)
-* 정적 팩터리 메서드가 생성자보다 좋은 장점 5가지
+* 정적 팩터리 메서드가 생성자보다 좋은 **장점 5가지**
   * 이름을 가질 수 있다.
     * 이름을 잘 지으면 반환될 객체의 특성을 쉽게 묘사할 수 있다.
     <br>ex) BigInteger.probablePrime
@@ -28,7 +28,123 @@
 >>* 서비스 인터페이스(Service Interface) : 구현체의 동작을 정<br>ex) JDBC Connection<br>
 >>* 제공자 등록 API(Provider registration API) : 제공자가 구현체를 등록할 떄 사용<br>ex) JDBC DriverManager.registerDriver<br>
 >>* 서비스 접근 API(Service access API) : 클라인트가 서비스의 인스턴스를 얻을 때 사용<br>ex) JDBC DriverManager.getConnection
+
+* 정적 팩터리 메서드가 생성자보다 좋지 않은 **단점 5가지**
+  * 정적 팩터리 메서드만 제공하면 하위 클래스를 만들 수 없다.
+  <br>상속을 하려면 public이나 protected 생성자가 필요하기 때문
+  * 정적 팩터리 메서드는 프로그래머가 찾기 어렵다.
+  <br>API 문서를 잘 써놓고 메서드 이름도 알려진 규약을 따라 작성 필요
+
+
+### 아이템 2. 생성자에 매개변수가 많다면 빌더(Builder)를 고려하라
+
+* 생성자나 정적 팩터리 메서드의 경우 선택적 매개변수가 많을 때 대응이 어려움.
+* 점층적 생성자 패턴을 적용할 경우 매개변수 개수가 많아지면 코드를 작성하거나 읽기 어렵다.
+```java
+// 코드 2-1 점층적 생성자 패턴 - 확장하기 어려움
+public class NutritionFacts {
+  private final int servingSize;  // (ml, 1회 제공량)    필수
+  private final int servings;     // (회, 총 n회 제공량) 필수
+  private final int calories;     // (1회 제공량당)      선택
+  private final int fat;          // (g/1회 제공량)      선택
   
+  public NutritionsFacts(int servingSize, int servings) {
+    this(servingSize, servings, 0);
+  }
+  
+  public NutritionsFacts(int servingSize, int servings, int calories) {
+    this(servingSize, servings, calories, 0);
+  }
+  
+  public NutritionsFacts(int servingSize, int servings, int calories, int fat) {
+    this.servingSize = servingSize;
+    this.servings    = servings;
+    tihs.calories    = calories;
+    this.fat         = fat;
+  }
+}
+
+// 사용예시
+NutritionsFacts cocaCola = new NutritionsFacts(240, 8, 100, 0);
+```
+* 자바 빈즈 패턴에서는 객체 하나를 만들려면 메서드를 여러 개 호출해야 하고,<br>
+객체가 완전히 생성되기 전까지는 일관성(consistency)이 무너진 상태에 놓이게 된다.
+```java
+// 코드 2-2 자바빈즈 패턴 - 일관성이 꺠지고, 불변으로 만들 수 없다.
+public class NutritionFacts {
+  private final int servingSize = -1;  // 필수, 기본값 없음
+  private final int servings    = -1;  // 필수, 기본값 없음
+  private final int calories    = 0;
+  private final int fat         = 0;
+  
+  // 생성자
+  public NutritionsFacts() { }
+  
+  public NutritionsFacts(int servingSize, int servings, int calories) {
+    this(servingSize, servings, calories, 0);
+  }
+  
+  public void setServingSize(int val) { servingSize = val };
+  public void setServings(int val) { servings = val };
+  ...
+}
+
+// 사용예시
+NutritionFacts cocaCola = new NutritionFacts();
+cocaCola.setServingSize(240);
+cocaCola.setServings(8);
+...
+```
+* 빌더 패턴 = 점층적 생성자 패턴의 안전성 + 자바 빈즈 패턴의 가독성
+```java
+// 코드 2-3 빌더 패턴 - 점층적 생성자 패턴의 안전성 + 자바 빈즈 패턴의 가독성
+public class NutritionFacts {
+  private final int servingSize;
+  private final int servings;
+  private final int calories;
+  private final int fat;
+  
+  public static class Builder {
+    // 필수 매개변수
+    private final int servingSize;
+    private final int servings;
+    
+    // 선택 매개변수 - 기본값으로 초기화
+    private int calories = 0;
+    private int fat = 0;
+    
+    public Builder(int servingSize, int servings) {
+      this.servingSize = servingSize;
+      this.servings = servings;
+    }
+    
+    public Builder calories(int val) {
+      calories = val;
+      return this;
+    }
+    
+    public Builder fat(int val) {
+      fat = val;
+      return this;
+    }
+    
+    public NutritionFacts build() {
+      return new NutritionFacts(this);
+    }
+  }
+  
+  private NutritionFacts(Builder builder) {
+    servingSize = builder.servingSize;
+    servings = builder.servings;
+    calories = builder.calories;
+    fat = builder.fat;
+  }
+}
+
+// 사용예시
+NutritionFacts cocaCola = new NutritionFacts.Builder(240, 8).calories(100).build();
+```
+
 ### 아이템 57. 지역변수의 범위를 최소화하라
 
 >**지역변수의 범위를 줄이는 기법**<br>
