@@ -346,6 +346,66 @@ static void copy(String src, String dst) throws IOException {
   <br>null이 아닌 모든 참조값 x에 대해, x.equals(null)은 false다.
 
 
+### 아이템 11. equals를 재정의하려거든 hashCode도 재정의하라
+
+* equals를 재정의한 클래스 모두에서 hashCode도 재정의해야 함.
+<br>재정의하지 않을 경우 HashMap, HashSet을 사용할 때 문제 발생.
+* hashCode 규약
+  * equals 비교에 사용되는 정보가 변경되지 않았다면, 애플리케이션이 실행되는 동안 그 객체의 hashCode 메서드는 항상 같은 값을 반환
+  * equals(Object)가 두 객체를 같다고 판단했다면, 두 객체의 hashCode는 같은 값을 반환
+  * equals(Object)가 두 객체를 다르게 판단했더라도, 두 객체의 hashCode가 서로 다른 값을 반환할 필요는 없다.
+  <br>단, 다른 객체에 대해서는 다른 값을 반환해야 해시테이블의 성능이 좋아진다.
+* 좋은 해시 함수라면 서로 다른 인스턴스에 다른 해시코드를 반환
+* 이상적인 해시 함수는 주어진 인스턴스들을 32비트 정수 범위에 균일하게 분배
+* **성능을 높이려고 해시코드를 계산할 때 핵심 필드를 생략해서는 안 된다.**
+```java
+// 코드 11-2 전형적인 hashCode 메서드
+// PhoneNumber 인스턴스의 핵심 필드 3개만을 사용해 간단한 계산을 수행
+@Override public int hashCode() {
+  int result = Short.hashCode(areaCode);
+  result = 31 * result + Short.hashCode(prefix);
+  result = 31 * result + Short.hashCode(lineNum);
+  return result;
+}
+
+// 코드 11-3 한 줄짜리 hashCode 메서드 - 성능이 아쉬움
+@Override public int hashCode() {
+  return Objects.hash(lineNum, prefix, areaCode);
+}
+
+// 코드 11-4 해시코드를 지연 초기화하는 hashCode 메서드 - 스레드 안정성까지 고려해야 함
+private int hashCode; // 자동으로 0으로 초기화
+
+@Override public int hashCode() {
+  int result = hashCode;
+  if (result == 0) {
+    result = Short.hashCode(areaCode);
+    result = 31 * result + Short.hashCode(prefix);
+    result = 31 * result + Short.hashCode(lineNum);
+    hashCode = result;
+  }
+  return result;
+}
+```
+
+
+### 아이템 12. toString을 항상 재정의하라
+
+* Object의 기본 toString 메서드 : **클래스_이름@16진수로_표시한_해시코드** 를 반환
+* toString을 잘 구현한 클래스는 사용하기에 훨씬 즐겁고, 그 클래스를 사용한 시스템은 디버깅하기 쉽다.
+* toString은 그 객체가 가진 주요 정보 모두를 반환하는 게 좋다.
+
+
+### 아이템 13. clone 재정의는 주의해서 진행하라
+
+* **Cloneable 인터페이스의 가장 큰 문제**
+<br>clone 메서드가 Object 클래스에 protected로 선언됨. 따라서 Cloneable을 구현하는 것만으로는 외부 객체에서 clone 메서드를 호출할 수 없다.
+* Cloneable을 구현한 클래스의 인스턴스에서 clone을 호출하면 그 객체의 모든 필드들을 복사한 객체를 반환
+<br>Cloneable을 구현하지 않은 클래스의 인스턴스에서 호출 시 CloneNotSupportedException을 던진다.
+* 실무에서 CLoneable을 구현한 클래스는 clone 메서드를 public으로 제공하며, 사용자는 당연히 복제가 제대로 이뤄지리라 기대한다.
+<br>**clone 메서드를 사용할 경우 생성자를 사용하지 않고도 객체를 생성할 수 있다.**
+* 
+
 ### 아이템 57. 지역변수의 범위를 최소화하라
 
 >**지역변수의 범위를 줄이는 기법**<br>
