@@ -3,409 +3,45 @@
 ## 2장 객체 생성과 파괴
 
 ### 아이템 1. 생성자 대신 정적 팩터리 메서드를 고려하라
-
-* 클래스는 생성자와 별도로 정적 팩터리 메서드(static factory method)를 제공할 수 있다.
-<br>(해당 클래스의 인스턴스를 반환함)
-* 정적 팩터리 메서드가 생성자보다 좋은 **장점 5가지**
-  * 이름을 가질 수 있다.
-    * 이름을 잘 지으면 반환될 객체의 특성을 쉽게 묘사할 수 있다.
-    <br>ex) BigInteger.probablePrime
-  * 호출될 때마다 인스턴스를 새로 생성하지는 않아도 된다.
-    * 같은 객체가 자주 요청되는 상황이라면 성능을 상당히 끌어올려 준다.
-    * 반복되는 요청에 같은 객체를 반환하는 식으로 언제 어느 인터페이스가 살아 있게 살지를 철저히 통제 가능<br>
-    = **인스턴스 통제(instance-controlled) 클래스**
-  * 반환 타입의 하위 타입 객체를 반환할 수 있는 능력이 있다.
-    * 반환할 객체의 클래스를 자유롭게 선택할 수 있는 유연성 제공
-  * 입력 매개변수에 따라 매번 다른 클래스의 객체를 반환할 수 있다.
-    * 반환 타입의 하위 타입이기만 하면 어떤 클래스의 객체를 반환하든 상관없음.
-  * 정적 팩터리 메서드를 작성하는 시점에는 반환할 객체의 클래스가 존재하지 않아도 된다.
-    * JDBC(Java Database Connectivity)와 같은 서비스 제공자 프레임워크를 만들 수 있는 유연성 제공
->인스턴스를 통제하는 이유<br>
->>* 클래스를 싱글턴으로 만들 수도, 인스턴스화 불가로 만들 수도 있다.<br>
->>* 불변 값 클래스에서 동치인 인스턴스가 단 하나뿐임을 보장할 수 있다. (a == b일 때만 a.equals(b)가 성립)
----
->서비스 제공자 프레임워크(Service Provider Framework) 구성<br>
->>* 서비스 인터페이스(Service Interface) : 구현체의 동작을 정<br>ex) JDBC Connection<br>
->>* 제공자 등록 API(Provider registration API) : 제공자가 구현체를 등록할 떄 사용<br>ex) JDBC DriverManager.registerDriver<br>
->>* 서비스 접근 API(Service access API) : 클라인트가 서비스의 인스턴스를 얻을 때 사용<br>ex) JDBC DriverManager.getConnection
-
-* 정적 팩터리 메서드가 생성자보다 좋지 않은 **단점 5가지**
-  * 정적 팩터리 메서드만 제공하면 하위 클래스를 만들 수 없다.
-  <br>상속을 하려면 public이나 protected 생성자가 필요하기 때문
-  * 정적 팩터리 메서드는 프로그래머가 찾기 어렵다.
-  <br>API 문서를 잘 써놓고 메서드 이름도 알려진 규약을 따라 작성 필요
-
+https://github.com/RedRabbit-88/EffectiveJava/wiki/2%EC%9E%A5-%EA%B0%9D%EC%B2%B4-%EC%83%9D%EC%84%B1%EA%B3%BC-%ED%8C%8C%EA%B4%B4#%EC%95%84%EC%9D%B4%ED%85%9C-1
 
 ### 아이템 2. 생성자에 매개변수가 많다면 빌더(Builder)를 고려하라
-
-* 생성자나 정적 팩터리 메서드의 경우 선택적 매개변수가 많을 때 대응이 어려움.
-* 점층적 생성자 패턴을 적용할 경우 매개변수 개수가 많아지면 코드를 작성하거나 읽기 어렵다.
-```java
-// 코드 2-1 점층적 생성자 패턴 - 확장하기 어려움
-public class NutritionFacts {
-  private final int servingSize;  // (ml, 1회 제공량)    필수
-  private final int servings;     // (회, 총 n회 제공량) 필수
-  private final int calories;     // (1회 제공량당)      선택
-  private final int fat;          // (g/1회 제공량)      선택
-  
-  public NutritionsFacts(int servingSize, int servings) {
-    this(servingSize, servings, 0);
-  }
-  
-  public NutritionsFacts(int servingSize, int servings, int calories) {
-    this(servingSize, servings, calories, 0);
-  }
-  
-  public NutritionsFacts(int servingSize, int servings, int calories, int fat) {
-    this.servingSize = servingSize;
-    this.servings    = servings;
-    tihs.calories    = calories;
-    this.fat         = fat;
-  }
-}
-
-// 사용예시
-NutritionsFacts cocaCola = new NutritionsFacts(240, 8, 100, 0);
-```
-* 자바 빈즈 패턴에서는 객체 하나를 만들려면 메서드를 여러 개 호출해야 하고,<br>
-객체가 완전히 생성되기 전까지는 일관성(consistency)이 무너진 상태에 놓이게 된다.
-```java
-// 코드 2-2 자바빈즈 패턴 - 일관성이 꺠지고, 불변으로 만들 수 없다.
-public class NutritionFacts {
-  private final int servingSize = -1;  // 필수, 기본값 없음
-  private final int servings    = -1;  // 필수, 기본값 없음
-  private final int calories    = 0;
-  private final int fat         = 0;
-  
-  // 생성자
-  public NutritionsFacts() { }
-  
-  public NutritionsFacts(int servingSize, int servings, int calories) {
-    this(servingSize, servings, calories, 0);
-  }
-  
-  public void setServingSize(int val) { servingSize = val };
-  public void setServings(int val) { servings = val };
-  ...
-}
-
-// 사용예시
-NutritionFacts cocaCola = new NutritionFacts();
-cocaCola.setServingSize(240);
-cocaCola.setServings(8);
-...
-```
-* 빌더 패턴 = 점층적 생성자 패턴의 안전성 + 자바 빈즈 패턴의 가독성
-```java
-// 코드 2-3 빌더 패턴 - 점층적 생성자 패턴의 안전성 + 자바 빈즈 패턴의 가독성
-public class NutritionFacts {
-  private final int servingSize;
-  private final int servings;
-  private final int calories;
-  private final int fat;
-  
-  public static class Builder {
-    // 필수 매개변수
-    private final int servingSize;
-    private final int servings;
-    
-    // 선택 매개변수 - 기본값으로 초기화
-    private int calories = 0;
-    private int fat = 0;
-    
-    public Builder(int servingSize, int servings) {
-      this.servingSize = servingSize;
-      this.servings = servings;
-    }
-    
-    public Builder calories(int val) {
-      calories = val;
-      return this;
-    }
-    
-    public Builder fat(int val) {
-      fat = val;
-      return this;
-    }
-    
-    public NutritionFacts build() {
-      return new NutritionFacts(this);
-    }
-  }
-  
-  private NutritionFacts(Builder builder) {
-    servingSize = builder.servingSize;
-    servings = builder.servings;
-    calories = builder.calories;
-    fat = builder.fat;
-  }
-}
-
-// 사용예시
-NutritionFacts cocaCola = new NutritionFacts.Builder(240, 8).calories(100).build();
-```
-
+https://github.com/RedRabbit-88/EffectiveJava/wiki/2%EC%9E%A5-%EA%B0%9D%EC%B2%B4-%EC%83%9D%EC%84%B1%EA%B3%BC-%ED%8C%8C%EA%B4%B4#%EC%95%84%EC%9D%B4%ED%85%9C-2
 
 ### 아이템 3. private 생성자나 열거 타입으로 싱글턴임을 보증하라
-
-* 싱글턴(singleton) : 인스턴스를 오직 하나만 생성할 수 있는 클래스
-* 클래스를 싱글턴으로 만들면 이를 사용하는 클라이언트를 테스트하기가 어려워질 수 있음.
-* **public 필드 방식**의 장점
-  * 해당 클래스가 싱글턴임이 API에 명백히 드러남
-  * 간결하다
-```java
-// 코드 3-1 public static final 필드 방식의 싱글턴
-public class Elvis {
-  public static final Elvis INSTANCE = new Elvis();
-  private Elvis() { }
-  
-  public void leaveTheBuilding() { }
-}
-```
-
-* **정적 팩터리 방식**의 장점
-  * API를 바꾸지 않고도 싱글턴이 아니게 변경할 수 있음. (getInstance()를 변경)
-  * 정적 팩터리를 제네릭 싱글턴 팩터리로 만들 수 있음.
-  * 정적 팩터리의 메서드 참조를 Supplier로 사용할 수 있음.
-  <br>ex) Elvis::getInstance -> Supplier<Elvis>
-```java
-// 코드 3-2 정적 팩터리 방식의 싱글턴
-public class Elvis {
-  private static final Elvis INSTANCE = new Elvis();
-  private Elvis() { }
-  public static Elvis getInstance() { return INSTANCE; }
-  
-  public void leaveTheBuilding() { }
-}
-```
-
-* 원소가 하나인 열거 타입을 선언
-  * **대부분의 상황에서 가장 좋음**
-```java
-public enum Elvis {
-  INSTANCE;
-  
-  public void leaveTheBuilding() { }
-}
-```
-
+https://github.com/RedRabbit-88/EffectiveJava/wiki/2%EC%9E%A5-%EA%B0%9D%EC%B2%B4-%EC%83%9D%EC%84%B1%EA%B3%BC-%ED%8C%8C%EA%B4%B4#%EC%95%84%EC%9D%B4%ED%85%9C-3
 
 ### 아이템 4. 인스턴스화를 막으려거든 private 생성자를 사용하라
-
-```java
-public class UtilityClass {
-  // 기본 생성자가 만들어지는 것을 막는다(인스턴스화 방지용)
-  private UtilityClass() {
-    throw new AssertionError();
-  }
-}
-```
-
+https://github.com/RedRabbit-88/EffectiveJava/wiki/2%EC%9E%A5-%EA%B0%9D%EC%B2%B4-%EC%83%9D%EC%84%B1%EA%B3%BC-%ED%8C%8C%EA%B4%B4#%EC%95%84%EC%9D%B4%ED%85%9C-4
 
 ### 아이템 5. 자원을 직접 명시하지 말고 의존 객체 주입을 사용하라
-
-* 사용하는 자원에 따라 동작이 달라지는 클래스에는 정적 유틸리티 클래스나 싱글턴 방식이 적합하지 않다.
-```java
-// 코드 5-1 정적 유틸리티를 잘못 사용한 예 - 유연하지 않고 테스트하기 어려움
-public class SpellChecker {
-  // 사전을 언제나 하나만 사용한다고?? 유연하지 않음
-  private static final Lexicon dictionary = ...;
-  
-  // 객체 생성 방지
-  private SpellChecker() { }
-  ...
-}
-
-
-// 코드 5-2 싱글턴을 잘못 사용한 예 - 유연하지 않고 테스트하기 어려움
-public class SpellChecker {
-  // 사전을 언제나 하나만 사용한다고?? 유연하지 않음
-  private static final Lexicon dictionary = ...;
-  
-  // 객체 생성 방지
-  private SpellChecker() { }
-  public static SpellChecker INSTANCE = new SpellChecker(...);
-  ...
-}
-```
-* 인스턴스를 생성할 때 생성자에 필요한 자원을 넘겨주는 방식이 좋다.
-```java
-// 코드 5-3 의존 객체 주입 방식
-public class SpellChecker {
-  private static final Lexicon dictionary;
-  
-  public SpellChecker(Lexicon dictionary) {
-    this.dictionary = Objects.requireNonNull(dictionary);
-  }
-  ...
-}
-```
-
+https://github.com/RedRabbit-88/EffectiveJava/wiki/2%EC%9E%A5-%EA%B0%9D%EC%B2%B4-%EC%83%9D%EC%84%B1%EA%B3%BC-%ED%8C%8C%EA%B4%B4#%EC%95%84%EC%9D%B4%ED%85%9C-5
 
 ### 아이템 6. 불필요한 객체 생성을 피하라
-
-* 생성자 대신 정적 팩터리 메서드를 사용하면 불필요한 객체 생성을 피할 수 있음.
-<br>ex) `Boolean(String)` 대신 `Boolean.valueOf(String)` 사용
-
-* 생성 비용이 비싼 객체의 경우 다른 방법을 모색해라.
-```java
-// 코드 6-1 생성 비용이 비싼 객체
-static boolean isRomanNumeral(String s) {
-  return s.matches("^(?=.)M*(C[MD]...");
-}
-
-// 코드 6-2 값비싼 객체를 재사용해 성능을 개선
-public class RomanNumerals {
-  private static final Pattern ROMAN = Pattern.complie("^(?=.)M*(C[MD]...");
-  
-  static boolean isRomanNumeral(String s) {
-    return ROMAN.matcher(s).matches();
-  }
-}
-```
-
-* 불필요한 오토박싱은 피하라
-```java
-// 코드 6-3 잘못된 오토박싱
-private static long sum() {
-  // long이 아닌 박싱된 기본 타입인 Long을 사용해서 오토박싱에 많은 자원 소모
-  Long sum = 0L;
-  for (long i = 0; i<= INTEGER.MAX_VLAUE; i++)
-    sum += i;
-  
-  return sum;
-}
-```
-
+https://github.com/RedRabbit-88/EffectiveJava/wiki/2%EC%9E%A5-%EA%B0%9D%EC%B2%B4-%EC%83%9D%EC%84%B1%EA%B3%BC-%ED%8C%8C%EA%B4%B4#%EC%95%84%EC%9D%B4%ED%85%9C-6
 
 ### 아이템 7. 다 쓴 객체 참조를 해제하라
-
-T.B.D
-
+https://github.com/RedRabbit-88/EffectiveJava/wiki/2%EC%9E%A5-%EA%B0%9D%EC%B2%B4-%EC%83%9D%EC%84%B1%EA%B3%BC-%ED%8C%8C%EA%B4%B4#%EC%95%84%EC%9D%B4%ED%85%9C-7
 
 ### 아이템 8. finalizer와 cleaner 사용을 피하라
-
-T.B.D
-
+https://github.com/RedRabbit-88/EffectiveJava/wiki/2%EC%9E%A5-%EA%B0%9D%EC%B2%B4-%EC%83%9D%EC%84%B1%EA%B3%BC-%ED%8C%8C%EA%B4%B4#%EC%95%84%EC%9D%B4%ED%85%9C-8
 
 ### 아이템 9. try-finally보다는 try-with-resources를 사용하라 (자바 7 이후)
-
-* InputStream, OutputStream, java.sql.Connection 등의 경우 자원 사용 후 close메서드를 호출해야 함.
-```java
-// 코드 9-1 try-finally - 좋은 방식이 아니다
-static String firstLineOfFile(String path) throws IOException {
-  BufferedReader br = new BufferedReader(new FileReader(path));
-  try {
-    return br.readLine();
-  } finally {
-    br.close();
-  }
-}
-
-// 코드 9-3 try-with-resources - 자원을 회수하는 최선책!
-static String firstLineOfFile(String path) throws IOException {
-  // try문이 끝나면 자동으로 close 호출
-  try (BufferedReader br = new BufferedReader(new FileReader(path))) {
-    return br.readLine();
-  }
-}
-
-// 코드 9-4 복수의 자원을 처리하는 try-with-resources - 짧고 매혹적
-static void copy(String src, String dst) throws IOException {
-  try (InputStream in = new FileInputStream(src);
-       OutputStream out = new FileOutputStream(dst)) {
-    byte[] buf = new byte[BUFFER_SIZE];
-    int n;
-    while ((n = in.read(buf)) >= 0) {
-      out.write(buf, 0, n);
-    }
-  }
-}
-```
+https://github.com/RedRabbit-88/EffectiveJava/wiki/2%EC%9E%A5-%EA%B0%9D%EC%B2%B4-%EC%83%9D%EC%84%B1%EA%B3%BC-%ED%8C%8C%EA%B4%B4#%EC%95%84%EC%9D%B4%ED%85%9C-9
 
 ## 3장 모든 객체의 공통 메서드
 
 ### 아이템 10. equals는 일반 규약을 지켜 재정의하라
-
-* 다음과 같은 상황에서는 재정의하지 말 것
-  * 각 인스턴스가 본질적으로 고유할 때
-  <br>ex) Thread
-  * 인스턴스의 "논리적 동치성(logical equality)"을 검사할 일이 없다.
-  * 상위 클래스에서 재정의한 equals가 하위 클래스에도 딱 들어맞는다.
-  * 클래스가 private이거나 package-private이고 equals 메서드를 호출할 일이 없다.
-* **equals를 재정의해야 할 때는 논리적 동치성을 확인해야할 경우만!**
-* equals 메서드 재정의할 때 지켜야할 일반 규약
-  * **반사성(reflexivity)**
-  <br>null이 아닌 모든 참조값 x에 대해, x.equals(x)는 true다.
-  * **대칭성(symmetry)**
-  <br>null이 아닌 모든 참조값 x, y에 대해, x.equals(y)가 true면 y.equals(x)도 true다.
-  * **추이성(transitivity)**
-  <br>null이 아닌 모든 참조값 x, y, z에 대해, x.equals(y)가 true이고 y.equals(z)도 true면 x.equals(z)도 true다.
-  * **일관성(consistency)**
-  <br>null이 아닌 모든 참조값 x, y에 대해, x.equals(y)를 반복해서 호출하면 항상 true를 반환하거나 항상 false를 반환한다.
-  * **null-아님**
-  <br>null이 아닌 모든 참조값 x에 대해, x.equals(null)은 false다.
-
+https://github.com/RedRabbit-88/EffectiveJava/wiki/3%EC%9E%A5-%EB%AA%A8%EB%93%A0-%EA%B0%9D%EC%B2%B4%EC%9D%98-%EA%B3%B5%ED%86%B5-%EB%A9%94%EC%84%9C%EB%93%9C#%EC%95%84%EC%9D%B4%ED%85%9C-10
 
 ### 아이템 11. equals를 재정의하려거든 hashCode도 재정의하라
-
-* equals를 재정의한 클래스 모두에서 hashCode도 재정의해야 함.
-<br>재정의하지 않을 경우 HashMap, HashSet을 사용할 때 문제 발생.
-* hashCode 규약
-  * equals 비교에 사용되는 정보가 변경되지 않았다면, 애플리케이션이 실행되는 동안 그 객체의 hashCode 메서드는 항상 같은 값을 반환
-  * equals(Object)가 두 객체를 같다고 판단했다면, 두 객체의 hashCode는 같은 값을 반환
-  * equals(Object)가 두 객체를 다르게 판단했더라도, 두 객체의 hashCode가 서로 다른 값을 반환할 필요는 없다.
-  <br>단, 다른 객체에 대해서는 다른 값을 반환해야 해시테이블의 성능이 좋아진다.
-* 좋은 해시 함수라면 서로 다른 인스턴스에 다른 해시코드를 반환
-* 이상적인 해시 함수는 주어진 인스턴스들을 32비트 정수 범위에 균일하게 분배
-* **성능을 높이려고 해시코드를 계산할 때 핵심 필드를 생략해서는 안 된다.**
-```java
-// 코드 11-2 전형적인 hashCode 메서드
-// PhoneNumber 인스턴스의 핵심 필드 3개만을 사용해 간단한 계산을 수행
-@Override public int hashCode() {
-  int result = Short.hashCode(areaCode);
-  result = 31 * result + Short.hashCode(prefix);
-  result = 31 * result + Short.hashCode(lineNum);
-  return result;
-}
-
-// 코드 11-3 한 줄짜리 hashCode 메서드 - 성능이 아쉬움
-@Override public int hashCode() {
-  return Objects.hash(lineNum, prefix, areaCode);
-}
-
-// 코드 11-4 해시코드를 지연 초기화하는 hashCode 메서드 - 스레드 안정성까지 고려해야 함
-private int hashCode; // 자동으로 0으로 초기화
-
-@Override public int hashCode() {
-  int result = hashCode;
-  if (result == 0) {
-    result = Short.hashCode(areaCode);
-    result = 31 * result + Short.hashCode(prefix);
-    result = 31 * result + Short.hashCode(lineNum);
-    hashCode = result;
-  }
-  return result;
-}
-```
-
+https://github.com/RedRabbit-88/EffectiveJava/wiki/3%EC%9E%A5-%EB%AA%A8%EB%93%A0-%EA%B0%9D%EC%B2%B4%EC%9D%98-%EA%B3%B5%ED%86%B5-%EB%A9%94%EC%84%9C%EB%93%9C#%EC%95%84%EC%9D%B4%ED%85%9C-11
 
 ### 아이템 12. toString을 항상 재정의하라
-
-* Object의 기본 toString 메서드 : **클래스_이름@16진수로_표시한_해시코드** 를 반환
-* toString을 잘 구현한 클래스는 사용하기에 훨씬 즐겁고, 그 클래스를 사용한 시스템은 디버깅하기 쉽다.
-* toString은 그 객체가 가진 주요 정보 모두를 반환하는 게 좋다.
-
+https://github.com/RedRabbit-88/EffectiveJava/wiki/3%EC%9E%A5-%EB%AA%A8%EB%93%A0-%EA%B0%9D%EC%B2%B4%EC%9D%98-%EA%B3%B5%ED%86%B5-%EB%A9%94%EC%84%9C%EB%93%9C#%EC%95%84%EC%9D%B4%ED%85%9C-12
 
 ### 아이템 13. clone 재정의는 주의해서 진행하라
-
-* **Cloneable 인터페이스의 가장 큰 문제**
-<br>clone 메서드가 Object 클래스에 protected로 선언됨. 따라서 Cloneable을 구현하는 것만으로는 외부 객체에서 clone 메서드를 호출할 수 없다.
-* Cloneable을 구현한 클래스의 인스턴스에서 clone을 호출하면 그 객체의 모든 필드들을 복사한 객체를 반환
-<br>Cloneable을 구현하지 않은 클래스의 인스턴스에서 호출 시 CloneNotSupportedException을 던진다.
-* 실무에서 CLoneable을 구현한 클래스는 clone 메서드를 public으로 제공하며, 사용자는 당연히 복제가 제대로 이뤄지리라 기대한다.
-<br>**clone 메서드를 사용할 경우 생성자를 사용하지 않고도 객체를 생성할 수 있다.**
-* 
+https://github.com/RedRabbit-88/EffectiveJava/wiki/3%EC%9E%A5-%EB%AA%A8%EB%93%A0-%EA%B0%9D%EC%B2%B4%EC%9D%98-%EA%B3%B5%ED%86%B5-%EB%A9%94%EC%84%9C%EB%93%9C#%EC%95%84%EC%9D%B4%ED%85%9C-13
 
 ## 9장 일반적인 프로그래밍 원칙
 
