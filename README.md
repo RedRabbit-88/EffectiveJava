@@ -52,6 +52,10 @@ https://github.com/RedRabbit-88/EffectiveJava/wiki/3%EC%9E%A5-%EB%AA%A8%EB%93%A0
 ### 아이템 16. public 클래스에서는 public 필드가 아닌 접근자 메서드를 사용하라
 https://github.com/RedRabbit-88/EffectiveJava/wiki/3%EC%9E%A5-%EB%AA%A8%EB%93%A0-%EA%B0%9D%EC%B2%B4%EC%9D%98-%EA%B3%B5%ED%86%B5-%EB%A9%94%EC%84%9C%EB%93%9C#%EC%95%84%EC%9D%B4%ED%85%9C-16
 
+### 아이템 17. 변경 가능성을 최소화하라
+https://github.com/RedRabbit-88/EffectiveJava/wiki/3%EC%9E%A5-%EB%AA%A8%EB%93%A0-%EA%B0%9D%EC%B2%B4%EC%9D%98-%EA%B3%B5%ED%86%B5-%EB%A9%94%EC%84%9C%EB%93%9C#%EC%95%84%EC%9D%B4%ED%85%9C-17
+
+
 ## 9장 일반적인 프로그래밍 원칙
 
 ### 아이템 57. 지역변수의 범위를 최소화하라
