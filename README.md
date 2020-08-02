@@ -64,6 +64,12 @@ https://github.com/RedRabbit-88/EffectiveJava/wiki/3%EC%9E%A5-%EB%AA%A8%EB%93%A0
 ### 아이템 20. 추상 클래스보다는 인터페이스를 우선하라
 https://github.com/RedRabbit-88/EffectiveJava/wiki/3%EC%9E%A5-%EB%AA%A8%EB%93%A0-%EA%B0%9D%EC%B2%B4%EC%9D%98-%EA%B3%B5%ED%86%B5-%EB%A9%94%EC%84%9C%EB%93%9C#%EC%95%84%EC%9D%B4%ED%85%9C-20
 
+### 아이템 21. 인터페이스는 구현하는 쪽을 생각해 설계하라
+https://github.com/RedRabbit-88/EffectiveJava/wiki/3%EC%9E%A5-%EB%AA%A8%EB%93%A0-%EA%B0%9D%EC%B2%B4%EC%9D%98-%EA%B3%B5%ED%86%B5-%EB%A9%94%EC%84%9C%EB%93%9C#%EC%95%84%EC%9D%B4%ED%85%9C-21
+
+### 아이템 22. 인터페이스는 타입을 정의하는 용도로만 사용하라
+https://github.com/RedRabbit-88/EffectiveJava/wiki/3%EC%9E%A5-%EB%AA%A8%EB%93%A0-%EA%B0%9D%EC%B2%B4%EC%9D%98-%EA%B3%B5%ED%86%B5-%EB%A9%94%EC%84%9C%EB%93%9C#%EC%95%84%EC%9D%B4%ED%85%9C-22
+
 ## 9장 일반적인 프로그래밍 원칙
 
 ### 아이템 57. 지역변수의 범위를 최소화하라
