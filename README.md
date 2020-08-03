@@ -70,6 +70,12 @@ https://github.com/RedRabbit-88/EffectiveJava/wiki/3%EC%9E%A5-%EB%AA%A8%EB%93%A0
 ### 아이템 22. 인터페이스는 타입을 정의하는 용도로만 사용하라
 https://github.com/RedRabbit-88/EffectiveJava/wiki/3%EC%9E%A5-%EB%AA%A8%EB%93%A0-%EA%B0%9D%EC%B2%B4%EC%9D%98-%EA%B3%B5%ED%86%B5-%EB%A9%94%EC%84%9C%EB%93%9C#%EC%95%84%EC%9D%B4%ED%85%9C-22
 
+### 아이템 23. 태그 달린 클래스보다는 클래스 계층구조를 활용하라
+https://github.com/RedRabbit-88/EffectiveJava/wiki/3%EC%9E%A5-%EB%AA%A8%EB%93%A0-%EA%B0%9D%EC%B2%B4%EC%9D%98-%EA%B3%B5%ED%86%B5-%EB%A9%94%EC%84%9C%EB%93%9C#%EC%95%84%EC%9D%B4%ED%85%9C-23
+
+### 아이템 24. 멤버 클래스는 되도록 static으로 만들라
+https://github.com/RedRabbit-88/EffectiveJava/wiki/3%EC%9E%A5-%EB%AA%A8%EB%93%A0-%EA%B0%9D%EC%B2%B4%EC%9D%98-%EA%B3%B5%ED%86%B5-%EB%A9%94%EC%84%9C%EB%93%9C#%EC%95%84%EC%9D%B4%ED%85%9C-24
+
 ## 9장 일반적인 프로그래밍 원칙
 
 ### 아이템 57. 지역변수의 범위를 최소화하라
