@@ -46,35 +46,42 @@ https://github.com/RedRabbit-88/EffectiveJava/wiki/3%EC%9E%A5-%EB%AA%A8%EB%93%A0
 ### 아이템 14. Comparable을 구현할지 고려하라
 https://github.com/RedRabbit-88/EffectiveJava/wiki/3%EC%9E%A5-%EB%AA%A8%EB%93%A0-%EA%B0%9D%EC%B2%B4%EC%9D%98-%EA%B3%B5%ED%86%B5-%EB%A9%94%EC%84%9C%EB%93%9C#%EC%95%84%EC%9D%B4%ED%85%9C-14
 
+## 4장 클래스와 인터페이스
+
 ### 아이템 15. 클래스와 멤버의 접근 권한을 최소화하라
-https://github.com/RedRabbit-88/EffectiveJava/wiki/3%EC%9E%A5-%EB%AA%A8%EB%93%A0-%EA%B0%9D%EC%B2%B4%EC%9D%98-%EA%B3%B5%ED%86%B5-%EB%A9%94%EC%84%9C%EB%93%9C#%EC%95%84%EC%9D%B4%ED%85%9C-15
+https://github.com/RedRabbit-88/EffectiveJava/wiki/4%EC%9E%A5-%ED%81%B4%EB%9E%98%EC%8A%A4%EC%99%80-%EC%9D%B8%ED%84%B0%ED%8E%98%EC%9D%B4%EC%8A%A4#%EC%95%84%EC%9D%B4%ED%85%9C-15
 
 ### 아이템 16. public 클래스에서는 public 필드가 아닌 접근자 메서드를 사용하라
-https://github.com/RedRabbit-88/EffectiveJava/wiki/3%EC%9E%A5-%EB%AA%A8%EB%93%A0-%EA%B0%9D%EC%B2%B4%EC%9D%98-%EA%B3%B5%ED%86%B5-%EB%A9%94%EC%84%9C%EB%93%9C#%EC%95%84%EC%9D%B4%ED%85%9C-16
+https://github.com/RedRabbit-88/EffectiveJava/wiki/4%EC%9E%A5-%ED%81%B4%EB%9E%98%EC%8A%A4%EC%99%80-%EC%9D%B8%ED%84%B0%ED%8E%98%EC%9D%B4%EC%8A%A4#%EC%95%84%EC%9D%B4%ED%85%9C-16
 
 ### 아이템 17. 변경 가능성을 최소화하라
-https://github.com/RedRabbit-88/EffectiveJava/wiki/3%EC%9E%A5-%EB%AA%A8%EB%93%A0-%EA%B0%9D%EC%B2%B4%EC%9D%98-%EA%B3%B5%ED%86%B5-%EB%A9%94%EC%84%9C%EB%93%9C#%EC%95%84%EC%9D%B4%ED%85%9C-17
+https://github.com/RedRabbit-88/EffectiveJava/wiki/4%EC%9E%A5-%ED%81%B4%EB%9E%98%EC%8A%A4%EC%99%80-%EC%9D%B8%ED%84%B0%ED%8E%98%EC%9D%B4%EC%8A%A4#%EC%95%84%EC%9D%B4%ED%85%9C-17
 
 ### 아이템 18. 상속보다는 컴포지션을 사용하라
-https://github.com/RedRabbit-88/EffectiveJava/wiki/3%EC%9E%A5-%EB%AA%A8%EB%93%A0-%EA%B0%9D%EC%B2%B4%EC%9D%98-%EA%B3%B5%ED%86%B5-%EB%A9%94%EC%84%9C%EB%93%9C#%EC%95%84%EC%9D%B4%ED%85%9C-18
+https://github.com/RedRabbit-88/EffectiveJava/wiki/4%EC%9E%A5-%ED%81%B4%EB%9E%98%EC%8A%A4%EC%99%80-%EC%9D%B8%ED%84%B0%ED%8E%98%EC%9D%B4%EC%8A%A4#%EC%95%84%EC%9D%B4%ED%85%9C-18
 
 ### 아이템 19. 상속을 고려해 설계하고 문서화하라. 그러지 않았다면 상속을 금지하라
-https://github.com/RedRabbit-88/EffectiveJava/wiki/3%EC%9E%A5-%EB%AA%A8%EB%93%A0-%EA%B0%9D%EC%B2%B4%EC%9D%98-%EA%B3%B5%ED%86%B5-%EB%A9%94%EC%84%9C%EB%93%9C#%EC%95%84%EC%9D%B4%ED%85%9C-19
+https://github.com/RedRabbit-88/EffectiveJava/wiki/4%EC%9E%A5-%ED%81%B4%EB%9E%98%EC%8A%A4%EC%99%80-%EC%9D%B8%ED%84%B0%ED%8E%98%EC%9D%B4%EC%8A%A4#%EC%95%84%EC%9D%B4%ED%85%9C-19
 
 ### 아이템 20. 추상 클래스보다는 인터페이스를 우선하라
-https://github.com/RedRabbit-88/EffectiveJava/wiki/3%EC%9E%A5-%EB%AA%A8%EB%93%A0-%EA%B0%9D%EC%B2%B4%EC%9D%98-%EA%B3%B5%ED%86%B5-%EB%A9%94%EC%84%9C%EB%93%9C#%EC%95%84%EC%9D%B4%ED%85%9C-20
+https://github.com/RedRabbit-88/EffectiveJava/wiki/4%EC%9E%A5-%ED%81%B4%EB%9E%98%EC%8A%A4%EC%99%80-%EC%9D%B8%ED%84%B0%ED%8E%98%EC%9D%B4%EC%8A%A4#%EC%95%84%EC%9D%B4%ED%85%9C-20
 
 ### 아이템 21. 인터페이스는 구현하는 쪽을 생각해 설계하라
-https://github.com/RedRabbit-88/EffectiveJava/wiki/3%EC%9E%A5-%EB%AA%A8%EB%93%A0-%EA%B0%9D%EC%B2%B4%EC%9D%98-%EA%B3%B5%ED%86%B5-%EB%A9%94%EC%84%9C%EB%93%9C#%EC%95%84%EC%9D%B4%ED%85%9C-21
+https://github.com/RedRabbit-88/EffectiveJava/wiki/4%EC%9E%A5-%ED%81%B4%EB%9E%98%EC%8A%A4%EC%99%80-%EC%9D%B8%ED%84%B0%ED%8E%98%EC%9D%B4%EC%8A%A4#%EC%95%84%EC%9D%B4%ED%85%9C-21
 
 ### 아이템 22. 인터페이스는 타입을 정의하는 용도로만 사용하라
-https://github.com/RedRabbit-88/EffectiveJava/wiki/3%EC%9E%A5-%EB%AA%A8%EB%93%A0-%EA%B0%9D%EC%B2%B4%EC%9D%98-%EA%B3%B5%ED%86%B5-%EB%A9%94%EC%84%9C%EB%93%9C#%EC%95%84%EC%9D%B4%ED%85%9C-22
+https://github.com/RedRabbit-88/EffectiveJava/wiki/4%EC%9E%A5-%ED%81%B4%EB%9E%98%EC%8A%A4%EC%99%80-%EC%9D%B8%ED%84%B0%ED%8E%98%EC%9D%B4%EC%8A%A4#%EC%95%84%EC%9D%B4%ED%85%9C-22
 
 ### 아이템 23. 태그 달린 클래스보다는 클래스 계층구조를 활용하라
-https://github.com/RedRabbit-88/EffectiveJava/wiki/3%EC%9E%A5-%EB%AA%A8%EB%93%A0-%EA%B0%9D%EC%B2%B4%EC%9D%98-%EA%B3%B5%ED%86%B5-%EB%A9%94%EC%84%9C%EB%93%9C#%EC%95%84%EC%9D%B4%ED%85%9C-23
+https://github.com/RedRabbit-88/EffectiveJava/wiki/4%EC%9E%A5-%ED%81%B4%EB%9E%98%EC%8A%A4%EC%99%80-%EC%9D%B8%ED%84%B0%ED%8E%98%EC%9D%B4%EC%8A%A4#%EC%95%84%EC%9D%B4%ED%85%9C-23
 
 ### 아이템 24. 멤버 클래스는 되도록 static으로 만들라
-https://github.com/RedRabbit-88/EffectiveJava/wiki/3%EC%9E%A5-%EB%AA%A8%EB%93%A0-%EA%B0%9D%EC%B2%B4%EC%9D%98-%EA%B3%B5%ED%86%B5-%EB%A9%94%EC%84%9C%EB%93%9C#%EC%95%84%EC%9D%B4%ED%85%9C-24
+https://github.com/RedRabbit-88/EffectiveJava/wiki/4%EC%9E%A5-%ED%81%B4%EB%9E%98%EC%8A%A4%EC%99%80-%EC%9D%B8%ED%84%B0%ED%8E%98%EC%9D%B4%EC%8A%A4#%EC%95%84%EC%9D%B4%ED%85%9C-24
+
+### 아이템 25. 톱레벨 클래스는 한 파일에 하나만 담으라
+https://github.com/RedRabbit-88/EffectiveJava/wiki/4%EC%9E%A5-%ED%81%B4%EB%9E%98%EC%8A%A4%EC%99%80-%EC%9D%B8%ED%84%B0%ED%8E%98%EC%9D%B4%EC%8A%A4#%EC%95%84%EC%9D%B4%ED%85%9C-25
+
+## 5장 제네릭
 
 ## 9장 일반적인 프로그래밍 원칙
 
