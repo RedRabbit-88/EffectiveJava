@@ -89,6 +89,9 @@ https://github.com/RedRabbit-88/EffectiveJava/wiki/5%EC%9E%A5-%EC%A0%9C%EB%84%A4
 ### 아이템 27. 비검사 경고를 제거하라
 https://github.com/RedRabbit-88/EffectiveJava/wiki/5%EC%9E%A5-%EC%A0%9C%EB%84%A4%EB%A6%AD#%EC%95%84%EC%9D%B4%ED%85%9C-27
 
+### 아이템 28. 배열보다는 리스트를 사용하라
+https://github.com/RedRabbit-88/EffectiveJava/wiki/5%EC%9E%A5-%EC%A0%9C%EB%84%A4%EB%A6%AD#%EC%95%84%EC%9D%B4%ED%85%9C-28
+
 ## 9장 일반적인 프로그래밍 원칙
 
 ### 아이템 57. 지역변수의 범위를 최소화하라
