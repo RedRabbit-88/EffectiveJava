@@ -95,7 +95,7 @@ https://github.com/RedRabbit-88/EffectiveJava/wiki/5%EC%9E%A5-%EC%A0%9C%EB%84%A4
 ### 아이템 29. 이왕이면 제네릭 타입으로 만들라
 https://github.com/RedRabbit-88/EffectiveJava/wiki/5%EC%9E%A5-%EC%A0%9C%EB%84%A4%EB%A6%AD#%EC%95%84%EC%9D%B4%ED%85%9C-29
 
-### 아이템 30. 이왕이면 제니릭 메서드로 만들라
+### 아이템 30. 이왕이면 제네릭 메서드로 만들라
 https://github.com/RedRabbit-88/EffectiveJava/wiki/5%EC%9E%A5-%EC%A0%9C%EB%84%A4%EB%A6%AD#%EC%95%84%EC%9D%B4%ED%85%9C-30
 
 ## 9장 일반적인 프로그래밍 원칙
