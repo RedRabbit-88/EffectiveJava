@@ -98,6 +98,20 @@ https://github.com/RedRabbit-88/EffectiveJava/wiki/5%EC%9E%A5-%EC%A0%9C%EB%84%A4
 ### 아이템 30. 이왕이면 제네릭 메서드로 만들라
 https://github.com/RedRabbit-88/EffectiveJava/wiki/5%EC%9E%A5-%EC%A0%9C%EB%84%A4%EB%A6%AD#%EC%95%84%EC%9D%B4%ED%85%9C-30
 
+### 아이템 31. 한정적 와일드카드를 사용해 API 유연성을 높이라
+https://github.com/RedRabbit-88/EffectiveJava/wiki/5%EC%9E%A5-%EC%A0%9C%EB%84%A4%EB%A6%AD#%EC%95%84%EC%9D%B4%ED%85%9C-31
+
+### 아이템 32. 제네릭과 가변인수를 함꼐 쓸 때는 신중하라
+https://github.com/RedRabbit-88/EffectiveJava/wiki/5%EC%9E%A5-%EC%A0%9C%EB%84%A4%EB%A6%AD#%EC%95%84%EC%9D%B4%ED%85%9C-32
+
+### 아이템 33. 타입 안전 이종 컨테이너를 고려하라
+https://github.com/RedRabbit-88/EffectiveJava/wiki/5%EC%9E%A5-%EC%A0%9C%EB%84%A4%EB%A6%AD#%EC%95%84%EC%9D%B4%ED%85%9C-33
+
+## 6장 열거 타입과 애너테이션
+
+### 아이템 34. int 상수 대신 열거 타입을 사용하라
+https://github.com/RedRabbit-88/EffectiveJava/wiki/6%EC%9E%A5-%EC%97%B4%EA%B1%B0-%ED%83%80%EC%9E%85%EA%B3%BC-%EC%95%A0%EB%84%88%ED%85%8C%EC%9D%B4%EC%85%98#%EC%95%84%EC%9D%B4%ED%85%9C-34
+
 ## 9장 일반적인 프로그래밍 원칙
 
 ### 아이템 57. 지역변수의 범위를 최소화하라
