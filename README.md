@@ -127,6 +127,12 @@ https://github.com/RedRabbit-88/EffectiveJava/wiki/6%EC%9E%A5-%EC%97%B4%EA%B1%B0
 ### 아이템 39. 명명 패턴보다 애너테이션을 사용하라
 https://github.com/RedRabbit-88/EffectiveJava/wiki/6%EC%9E%A5-%EC%97%B4%EA%B1%B0-%ED%83%80%EC%9E%85%EA%B3%BC-%EC%95%A0%EB%84%88%ED%85%8C%EC%9D%B4%EC%85%98#%EC%95%84%EC%9D%B4%ED%85%9C-39
 
+### 아이템 40. @Override 애너테이션을 일관되게 사용하라
+https://github.com/RedRabbit-88/EffectiveJava/wiki/6%EC%9E%A5-%EC%97%B4%EA%B1%B0-%ED%83%80%EC%9E%85%EA%B3%BC-%EC%95%A0%EB%84%88%ED%85%8C%EC%9D%B4%EC%85%98#%EC%95%84%EC%9D%B4%ED%85%9C-40
+
+### 아이템 41. 정의하려는 것이 타입이라면 마커 인터페이스를 사용하라
+https://github.com/RedRabbit-88/EffectiveJava/wiki/6%EC%9E%A5-%EC%97%B4%EA%B1%B0-%ED%83%80%EC%9E%85%EA%B3%BC-%EC%95%A0%EB%84%88%ED%85%8C%EC%9D%B4%EC%85%98#%EC%95%84%EC%9D%B4%ED%85%9C-41
+
 ## 9장 일반적인 프로그래밍 원칙
 
 ### 아이템 57. 지역변수의 범위를 최소화하라
