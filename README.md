@@ -147,6 +147,20 @@ https://github.com/RedRabbit-88/EffectiveJava/wiki/7%EC%9E%A5-%EB%9E%8C%EB%8B%A4
 ### 아이템 45. 스트림은 주의해서 사용하라
 https://github.com/RedRabbit-88/EffectiveJava/wiki/7%EC%9E%A5-%EB%9E%8C%EB%8B%A4%EC%99%80-%EC%8A%A4%ED%8A%B8%EB%A6%BC#%EC%95%84%EC%9D%B4%ED%85%9C-45
 
+### 아이템 46. 스트림에서는 부작용 없는 함수를 사용하라
+https://github.com/RedRabbit-88/EffectiveJava/wiki/7%EC%9E%A5-%EB%9E%8C%EB%8B%A4%EC%99%80-%EC%8A%A4%ED%8A%B8%EB%A6%BC#%EC%95%84%EC%9D%B4%ED%85%9C-46
+
+### 아이템 47. 반환 타입으로는 스트림보다 컬렉션이 낫다
+https://github.com/RedRabbit-88/EffectiveJava/wiki/7%EC%9E%A5-%EB%9E%8C%EB%8B%A4%EC%99%80-%EC%8A%A4%ED%8A%B8%EB%A6%BC#%EC%95%84%EC%9D%B4%ED%85%9C-47
+
+### 아이템 48. 스트림 병렬화는 주의해서 적용하라
+https://github.com/RedRabbit-88/EffectiveJava/wiki/7%EC%9E%A5-%EB%9E%8C%EB%8B%A4%EC%99%80-%EC%8A%A4%ED%8A%B8%EB%A6%BC#%EC%95%84%EC%9D%B4%ED%85%9C-48
+
+## 8장 메서드
+
+### 아이템 49. 매개변수가 유효한지 검사하라
+
+
 ## 9장 일반적인 프로그래밍 원칙
 
 ### 아이템 57. 지역변수의 범위를 최소화하라
