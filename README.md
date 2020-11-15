@@ -159,6 +159,9 @@ https://github.com/RedRabbit-88/EffectiveJava/wiki/7%EC%9E%A5-%EB%9E%8C%EB%8B%A4
 ## 8장 메서드
 
 ### 아이템 49. 매개변수가 유효한지 검사하라
+https://github.com/RedRabbit-88/EffectiveJava/wiki/8%EC%9E%A5-%EB%A9%94%EC%84%9C%EB%93%9C#%EC%95%84%EC%9D%B4%ED%85%9C-49
+
+### 아이템 50. 적시에 방어적 복사본을 만들라
 
 
 ## 9장 일반적인 프로그래밍 원칙
