@@ -170,6 +170,12 @@ https://github.com/RedRabbit-88/EffectiveJava/wiki/8%EC%9E%A5-%EB%A9%94%EC%84%9C
 ### 아이템 52. 다중정의는 신중히 사용하라
 https://github.com/RedRabbit-88/EffectiveJava/wiki/8%EC%9E%A5-%EB%A9%94%EC%84%9C%EB%93%9C#%EC%95%84%EC%9D%B4%ED%85%9C-52
 
+### 아이템 53. 가변인수는 신중히 사용하라
+https://github.com/RedRabbit-88/EffectiveJava/wiki/8%EC%9E%A5-%EB%A9%94%EC%84%9C%EB%93%9C#%EC%95%84%EC%9D%B4%ED%85%9C-53
+
+### 아이템 54. null이 아닌, 빈 컬렉션이나 배열을 반환하라
+https://github.com/RedRabbit-88/EffectiveJava/wiki/8%EC%9E%A5-%EB%A9%94%EC%84%9C%EB%93%9C#%EC%95%84%EC%9D%B4%ED%85%9C-54
+
 ## 9장 일반적인 프로그래밍 원칙
 
 ### 아이템 57. 지역변수의 범위를 최소화하라
